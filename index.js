@@ -82,7 +82,32 @@ app.get("/api/admin/executions", async (req, res) => {
 app.get("/api/admin/accepted", async (req, res) => {
     try {
         const acceptedExecutions = await Execution.find({ status: "Accepted" });
-        res.status(200).json(acceptedExecutions);
+
+        const formattedExecutions = acceptedExecutions.map(execution => {
+            const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
+            const dateObject = new Date(dateTimestamp);
+
+            // Options for IST formatting
+            const options = {
+                timeZone: 'Asia/Kolkata', // IST timezone
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // Use 24-hour format
+            };
+
+            const istDateString = dateObject.toLocaleString('en-IN', options);
+
+            return {
+                ...execution.toObject(), // Convert Mongoose document to plain JavaScript object
+                date: istDateString
+            };
+        });
+
+        res.status(200).json(formattedExecutions);
     } catch (error) {
         console.error("Error fetching accepted executions:", error);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -92,7 +117,32 @@ app.get("/api/admin/accepted", async (req, res) => {
 app.get("/api/admin/rejected", async (req, res) => {
     try {
         const rejectedExecutions = await Execution.find({ status: "Rejected" });
-        res.status(200).json(rejectedExecutions);
+
+        const formattedExecutions = rejectedExecutions.map(execution => {
+            const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
+            const dateObject = new Date(dateTimestamp);
+
+            // Options for IST formatting
+            const options = {
+                timeZone: 'Asia/Kolkata', // IST timezone
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // Use 24-hour format
+            };
+
+            const istDateString = dateObject.toLocaleString('en-IN', options);
+
+            return {
+                ...execution.toObject(), // Convert Mongoose document to plain JavaScript object
+                date: istDateString
+            };
+        });
+
+        res.status(200).json(formattedExecutions);
     } catch (error) {
         console.error("Error fetching rejected executions:", error);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -103,7 +153,32 @@ app.get("/api/admin/email/:mailid", async (req, res) => {
     try {
         const { mailid } = req.params;
         const userExecutions = await Execution.find({ email: mailid });
-        res.status(200).json(userExecutions);
+
+        const formattedExecutions = userExecutions.map(execution => {
+            const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
+            const dateObject = new Date(dateTimestamp);
+
+            // Options for IST formatting
+            const options = {
+                timeZone: 'Asia/Kolkata', // IST timezone
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // Use 24-hour format
+            };
+
+            const istDateString = dateObject.toLocaleString('en-IN', options);
+
+            return {
+                ...execution.toObject(), // Convert Mongoose document to plain JavaScript object
+                date: istDateString
+            };
+        });
+
+        res.status(200).json(formattedExecutions);
     } catch (error) {
         console.error("Error fetching executions by email:", error);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -115,7 +190,32 @@ app.get("/api/admin/room/:roomno", async (req, res) => {
     try {
         const { roomno } = req.params;
         const roomExecutions = await Execution.find({ room: roomno });
-        res.status(200).json(roomExecutions);
+
+        const formattedExecutions = roomExecutions.map(execution => {
+            const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
+            const dateObject = new Date(dateTimestamp);
+
+            // Options for IST formatting
+            const options = {
+                timeZone: 'Asia/Kolkata', // IST timezone
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // Use 24-hour format
+            };
+
+            const istDateString = dateObject.toLocaleString('en-IN', options);
+
+            return {
+                ...execution.toObject(), // Convert Mongoose document to plain JavaScript object
+                date: istDateString
+            };
+        });
+
+        res.status(200).json(formattedExecutions);
     } catch (error) {
         console.error("Error fetching executions by room:", error);
         res.status(500).json({ message: "Server error", error: error.message });
