@@ -81,7 +81,7 @@ app.get("/api/admin/executions", async (req, res) => {
 
 app.get("/api/admin/accepted", async (req, res) => {
     try {
-        const acceptedExecutions = await Execution.find({ status: "Accepted" });
+        const acceptedExecutions = await Execution.find({ status: "Accepted" }).sort({ createdAt: -1 });
 
         const formattedExecutions = acceptedExecutions.map(execution => {
             const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
@@ -116,7 +116,7 @@ app.get("/api/admin/accepted", async (req, res) => {
 
 app.get("/api/admin/rejected", async (req, res) => {
     try {
-        const rejectedExecutions = await Execution.find({ status: "Rejected" });
+        const rejectedExecutions = await Execution.find({ status: "Rejected" }).sort({ createdAt: -1 });
 
         const formattedExecutions = rejectedExecutions.map(execution => {
             const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
@@ -152,7 +152,7 @@ app.get("/api/admin/rejected", async (req, res) => {
 app.get("/api/admin/email/:mailid", async (req, res) => {
     try {
         const { mailid } = req.params;
-        const userExecutions = await Execution.find({ email: mailid });
+        const userExecutions = await Execution.find({ email: mailid }).sort({ createdAt: -1 });
 
         const formattedExecutions = userExecutions.map(execution => {
             const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
@@ -189,7 +189,7 @@ app.get("/api/admin/email/:mailid", async (req, res) => {
 app.get("/api/admin/room/:roomno", async (req, res) => {
     try {
         const { roomno } = req.params;
-        const roomExecutions = await Execution.find({ room: roomno });
+        const roomExecutions = await Execution.find({ room: roomno }).sort({ createdAt: -1 });
 
         const formattedExecutions = roomExecutions.map(execution => {
             const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
