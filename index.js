@@ -222,6 +222,42 @@ app.get("/api/admin/room/:roomno", async (req, res) => {
     }
 });
 
+app.get("/api/admin/winners/:roomno", async (req, res) => {
+    try {
+        const { roomno } = req.params;
+        const winnerExecutions = await Execution.find({ room: roomno, status: "Accepted" }).sort({ createdAt: -1 });
+
+        const formattedExecutions = winnerExecutions.map(execution => {
+            const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
+            const dateObject = new Date(dateTimestamp);
+
+            // Options for IST formatting
+            const options = {
+                timeZone: 'Asia/Kolkata', // IST timezone
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // Use 24-hour format
+            };
+
+            const istDateString = dateObject.toLocaleString('en-IN', options);
+
+            return {
+                ...execution.toObject(), // Convert Mongoose document to plain JavaScript object
+                date: istDateString
+            };
+        });
+
+        res.status(200).json(formattedExecutions);
+    } catch (error) {
+        console.error("Error fetching executions by room:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
