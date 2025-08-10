@@ -225,7 +225,7 @@ app.get("/api/admin/room/:roomno", async (req, res) => {
 app.get("/api/admin/winners/:roomno", async (req, res) => {
     try {
         const { roomno } = req.params;
-        const winnerExecutions = await Execution.find({ room: roomno, status: "Accepted" }).sort({ createdAt: -1 });
+        const winnerExecutions = await Execution.find({ room: roomno, status: "Accepted" });
 
         const formattedExecutions = winnerExecutions.map(execution => {
             const dateTimestamp = parseInt(execution.date, 10); // Convert string to number
