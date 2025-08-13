@@ -298,7 +298,7 @@ app.post("/api/reviews/save", async (req, res) => {
 
 
 
-app.post("/api/reviews/all", async (req, res) => {
+app.get("/api/reviews/all", async (req, res) => {
      try {
         // Find all reviews and sort them by the 'submittedAt' field in descending order
         const reviews = await Review.find().sort({ submittedAt: -1 });
