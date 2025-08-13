@@ -9,6 +9,7 @@ dotenv.config();
 
 
 const { connectDB } = require('./db');
+const Review = require('./ReviewModel');
 // const path = require('path');
 
 // const _dirname = path.resolve();
@@ -296,6 +297,19 @@ app.post("/api/reviews/save", async (req, res) => {
 });
 
 
+
+app.post("/api/reviews/all", async (req, res) => {
+     try {
+        // Find all reviews and sort them by the 'submittedAt' field in descending order
+        const reviews = await Review.find().sort({ submittedAt: -1 });
+        
+        res.status(200).json(reviews);
+
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        res.status(500).json({ message: 'Server error while fetching reviews.' });
+    }
+});
 
 
 
