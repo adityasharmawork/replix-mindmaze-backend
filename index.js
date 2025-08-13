@@ -258,6 +258,53 @@ app.get("/api/admin/winners/:roomno", async (req, res) => {
     }
 });
 
+
+
+
+
+
+
+
+
+
+app.post("/api/reviews/save", async (req, res) => {
+     try {
+        const { rating, tags, comment } = req.body;
+
+        // Backend validation: rating is mandatory
+        if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+            return res.status(400).json({ message: 'A valid star rating between 1 and 5 is required.' });
+        }
+
+        const newReview = new Review({
+            rating,
+            tags,
+            comment,
+        });
+
+        const savedReview = await newReview.save();
+
+        res.status(201).json({ 
+            message: 'Feedback saved successfully!', 
+            review: savedReview 
+        });
+
+    } catch (error) {
+        console.error('Error saving review:', error);
+        res.status(500).json({ message: 'Server error while saving feedback.' });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
