@@ -307,7 +307,7 @@ app.get("/api/admin/winners/:roomno", async (req, res) => {
 
 app.post("/api/reviews/save", async (req, res) => {
      try {
-        const { rating, tags, comment } = req.body;
+        const { email, name, rating, tags, comment } = req.body;
 
         // Backend validation: rating is mandatory
         if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
@@ -315,6 +315,8 @@ app.post("/api/reviews/save", async (req, res) => {
         }
 
         const newReview = new Review({
+            email,
+            name,
             rating,
             tags,
             comment,
